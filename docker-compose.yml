@@ -1,0 +1,30 @@
+version: "3.2"
+services:
+    wp:
+        image: wordpress
+        ports:
+            - "8082:80"
+        volumes:
+            - ./wordpress:/var/www/html
+    db:
+        image: mysql
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=wordpress
+    redis:
+        image: redis
+        ports:
+            - "6379:6379"
+    nginx:
+        image: dkazakov/mem-nginx
+        ports:
+            - "80:80"
+    frontend:
+        image: dkazakov/mem-nextjs
+        ports:
+            - "3000:3000"
+        command: bash -c 'cd /app;npm run dev'
+    backend:
+        image: dkazakov/mem-backend
+        command: bash -c 'while true; do echo "TICK";app;sleep 1800;done'
